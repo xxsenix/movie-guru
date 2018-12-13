@@ -3,21 +3,27 @@
     margin: 0;
     padding: 0;
   }
-  
+
   body {
     font-family: 'Roboto', sans-serif;
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(67,67,67,1) 100%);
+    color: white;
   }
 
   header {
-    background: #f2f4f2;
+    background: rgba(67,67,67,1);
     text-align: center;
     height: 75px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid green;
     display: flex;
+    color: white;
   }
 
   header h1 {
     margin: auto;
+    text-transform: uppercase;
+    letter-spacing: 3px;
   }
 
   h2 {
