@@ -1,15 +1,18 @@
 'use strict';
 
 function displayMovieList(movies) {
-
     console.log(movies);
-    // $('#results-list').empty();
 
-    // $('#results-list').html(
-    //     `<li><h3>${movies.title}</h3></li>`
-    // );
+    $('#results-list').append(
+        `<li>
+        <img class='movie-poster' src='https://image.tmdb.org/t/p/w1280${movies.poster_path}'
+        <h3>${movies.title}</h3>
+        <p>${movies.overview}</p>
+        <p>Rating: ${movies.vote_average * 10}</p>
+        </li>`
+    );
 
-    // $('#results').removeClass('hidden');
+    $('#results').removeClass('hidden');
 }
 
 function getMovieInfo(movieID) {
@@ -19,7 +22,6 @@ function getMovieInfo(movieID) {
         url: theMovieDbInfoURL,
         dataType: 'jsonp',
         success: function(data){
-        //Only want the first result here as it is the most relevant one
           displayMovieList(data);
         },
         error: function(err){
@@ -33,7 +35,6 @@ function getMovieID(movieList) {
     const results = movieList.Similar.Results;
 
     for(let i = 0; i < results.length; i++) {
-        console.log(results[i].Name);
         const theMovieDbIdURL = `https://api.themoviedb.org/3/search/movie?api_key=2254751051c6a0ba6ea30e3dfd393cc9&language=en-US&query=${results[i].Name}&page=1`;
         
         $.ajax({
@@ -41,7 +42,8 @@ function getMovieID(movieList) {
             dataType: 'jsonp',
             success: function(data){
             //Only want the first result here as it is the most relevant one
-              getMovieInfo(data.results[0].id);
+              let results = data.results[0].id;
+              getMovieInfo(results);
             },
             error: function(err){
               console.log(err)
