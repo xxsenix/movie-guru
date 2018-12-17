@@ -67,3 +67,7 @@ ul li {
     display: block;
     border-radius: 25px;
 }
+
+.summary {
+    padding: 10px;
+}
