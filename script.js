@@ -1,9 +1,9 @@
 'use strict';
 
-function createYouTubeVidString(videos) {
+function createYouTubeVidString(videos, movieID) {
 
-$('#results-list').append(
-    `<div><iframe src="https://www.youtube.com/embed/${videos[0].id.videoId}" allow="autoplay; encrypted-media" width="350" height="200" frameborder="0" allowFullScreen></iframe></div>`
+$(`.video-${movieID}`).append(
+    `<iframe src="https://www.youtube.com/embed/${videos[0].id.videoId}" allow="autoplay; encrypted-media" width="350" height="200" frameborder="0" allowFullScreen></iframe>`
     );
 }
 
@@ -13,9 +13,7 @@ function formatQueryParams(params) {
     return queryItems.join('&');
   }
 
-function getYouTubeVideoId(movieTitle) {
-
-    console.log(movieTitle);
+function getYouTubeVideoId(movieTitle, movieID) {
 
     const searchURL = 'https://www.googleapis.com/youtube/v3/search';
     const apiKey = 'AIzaSyDew9bnIv-VFtNqJhIj8FGjc2FVx3JK864';
@@ -36,7 +34,7 @@ function getYouTubeVideoId(movieTitle) {
       }
       throw new Error(response.statusText);
     })
-    .then(responseJson => createYouTubeVidString(responseJson.items))
+    .then(responseJson => createYouTubeVidString(responseJson.items, movieID))
     .catch(err => {
       $('#js-error-message').text(`Something went wrong: ${err.message}`);
     });
@@ -44,11 +42,12 @@ function getYouTubeVideoId(movieTitle) {
 
 function displayMovieList(movies) {
 
-    getYouTubeVideoId(movies.title);
+    getYouTubeVideoId(movies.title, movies.id);
 
     $('#results-list').append(
         `<li>
         <img class='movie-poster' src='https://image.tmdb.org/t/p/w1280${movies.poster_path}'>
+        <div class="video-${movies.id}"></div>
         <h3 class='summary'>${movies.title}</h3>
         <p class='summary'>${movies.overview}</p>
         <p class='summary'>Rating: ${movies.vote_average * 10}</p>
@@ -110,7 +109,7 @@ function getSimilarMovies(movie) {
         }
      });
     }
-//listens for submit button to be pushed, takes the value of that input and passes it to js-search-movies
+
 function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
