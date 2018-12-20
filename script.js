@@ -3,7 +3,7 @@
 function createYouTubeVidString(videos, movieID) {
 
 $(`#video-${movieID}`).html(
-    `<iframe src="https://www.youtube.com/embed/${videos[0].id.videoId}" allow="autoplay; encrypted-media" width="350" height="200" frameborder="0" allowFullScreen></iframe>`
+    `<iframe class="youtube-video" src="https://www.youtube.com/embed/${videos[0].id.videoId}" allow="autoplay" encrypted-media" width="350" height="200" frameborder="0" allowFullScreen></iframe>`
     );
 }
 
@@ -53,7 +53,7 @@ function displayMovieList(movies) {
                 <div class="col-6">
                     <h3 class='summary' id="movie-title">${movies.title} <span><i class="fa fa-film" aria-hidden="true"></i></span></h3>
                     <p class='summary'>${movies.overview}</p>
-                    <div class="youtube-video" id="video-${movies.id}"></div>
+                    <div class="video-container" id="video-${movies.id}"></div>
                 </div>
             </div>
         </li>`

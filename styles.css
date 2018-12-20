@@ -45,7 +45,7 @@ ul {
 }
 
 ul li {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .movie-poster {
@@ -72,6 +72,8 @@ input[type=text] {
     font-size: 20px;
     font-weight: 200;
     margin-top: 10px;
+    border: 0;
+    outline: none;
 }
 
 input[type="submit"] {
@@ -86,6 +88,10 @@ input[type="submit"] {
     border: 0;
     vertical-align: bottom;
     margin-left: 2px;
+    outline: none;
+    transition-property: background, color;
+    transition-duration: .2s;
+    transition-timing-function: linear;
 }
 
 input[type="submit"]:hover {
@@ -93,3 +99,23 @@ input[type="submit"]:hover {
     color: #42f48c;
 }
 
+span:hover {
+    font-size: 30px;
+}
+
+@media only screen and (max-width: 580px) {
+    .summary {
+        text-align: center;
+    }
+
+    .movie-poster {
+        margin: 0 auto;
+    }
+
+    .youtube-video {
+        display: block;
+        margin: 0 auto;
+        width: 280px;
+        height: 160px;
+    }
+}
