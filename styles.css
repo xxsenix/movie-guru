@@ -40,18 +40,18 @@ form {
 }
 
 ul {
-    padding: 50px;
     list-style: none;
 }
 
 ul li {
-    margin-top: 30px;
+    margin-top: 100px;
 }
 
 .movie-poster {
     width: 250px;
     height: 375px;
     border-radius: 25px;
+    margin-left: 35px;
 }
 
 .summary {
@@ -106,10 +106,6 @@ span:hover {
 @media only screen and (max-width: 580px) {
     .summary {
         text-align: center;
-    }
-
-    .movie-poster {
-        margin: 0 auto;
     }
 
     .youtube-video {
