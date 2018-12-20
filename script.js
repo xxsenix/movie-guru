@@ -44,6 +44,9 @@ function displayMovieList(movies) {
     console.log(movies);
     getYouTubeVideoId(movies.title, movies.id);
 
+    let releaseDate = movies.release_date;
+    let year = releaseDate.substring(0, 4);
+
     $('#results-list').append(
         `<li>
             <div class="row">
@@ -51,7 +54,7 @@ function displayMovieList(movies) {
                     <img class='movie-poster' src='https://image.tmdb.org/t/p/w1280${movies.poster_path}'>
                 </div>
                 <div class="col-6">
-                    <h3 class='summary' id="movie-title">${movies.title} <span><i class="fa fa-film" aria-hidden="true"></i></span></h3>
+                    <h3 class='summary' id="movie-title">${movies.title} (${year}) <span><i class="fa fa-film" aria-hidden="true"></i></span></h3>
                     <p class='summary'>${movies.overview}</p>
                     <div class="video-container" id="video-${movies.id}"></div>
                 </div>

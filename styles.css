@@ -51,11 +51,11 @@ ul li {
     width: 250px;
     height: 375px;
     border-radius: 25px;
-    margin-left: 35px;
+    margin: 10px 0 0 35px;
 }
 
 .summary {
-    padding: 10px 0 10px 0;
+    padding: 5px 0 20px 0;
     line-height: 20px;
 }
 
@@ -81,7 +81,7 @@ input[type="submit"] {
     background: #42f48c;
     color: black;
     height: 30px;
-    width: 30px;
+    width: 40px;
     font-weight: bold;
     font-size: 12px;
     display: inline-block;
