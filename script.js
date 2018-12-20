@@ -2,7 +2,7 @@
 
 function createYouTubeVidString(videos, movieID) {
 
-$(`.video-${movieID}`).html(
+$(`#video-${movieID}`).html(
     `<iframe src="https://www.youtube.com/embed/${videos[0].id.videoId}" allow="autoplay; encrypted-media" width="350" height="200" frameborder="0" allowFullScreen></iframe>`
     );
 }
@@ -41,16 +41,21 @@ function getYouTubeVideoId(movieTitle, movieID) {
 }
 
 function displayMovieList(movies) {
-
+    console.log(movies);
     getYouTubeVideoId(movies.title, movies.id);
 
     $('#results-list').append(
         `<li>
-        <img class='movie-poster' src='https://image.tmdb.org/t/p/w1280${movies.poster_path}'>
-        <div class="video-${movies.id}"></div>
-        <h3 class='summary'>${movies.title}</h3>
-        <p class='summary'>${movies.overview}</p>
-        <p class='summary'>Rating: ${movies.vote_average * 10}</p>
+            <div class="row">
+                <div class="col-6">
+                    <img class='movie-poster' src='https://image.tmdb.org/t/p/w1280${movies.poster_path}'>
+                </div>
+                <div class="col-6">
+                    <h3 class='summary' id="movie-title">${movies.title} <span><i class="fa fa-film" aria-hidden="true"></i></span></h3>
+                    <p class='summary'>${movies.overview}</p>
+                    <div class="youtube-video" id="video-${movies.id}"></div>
+                </div>
+            </div>
         </li>`
     );
 
