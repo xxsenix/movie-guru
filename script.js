@@ -2,7 +2,7 @@
 
 function createYouTubeVidString(videos, movieID) {
 
-$(`.video-${movieID}`).append(
+$(`.video-${movieID}`).html(
     `<iframe src="https://www.youtube.com/embed/${videos[0].id.videoId}" allow="autoplay; encrypted-media" width="350" height="200" frameborder="0" allowFullScreen></iframe>`
     );
 }
@@ -57,7 +57,12 @@ function displayMovieList(movies) {
     $('#results').removeClass('hidden');
 }
 
-function getMovieInfo(movieID) {
+function getMovieInfo(data) {
+
+    console.log(data)
+
+    let movieID = data[0].id;
+
     const theMovieDbInfoURL = `https://api.themoviedb.org/3/movie/${movieID}?api_key=2254751051c6a0ba6ea30e3dfd393cc9&language=en-US`
     
     $.ajax({
@@ -67,7 +72,7 @@ function getMovieInfo(movieID) {
           displayMovieList(data);
         },
         error: function(err){
-          console.log(err)
+          console.log(err);
         }
      });
 }
@@ -78,15 +83,14 @@ function getMovieID(recommendations) {
     
     for(let i = 0; i < results.length; i++) {
 
-        const theMovieDbIdURL = `https://api.themoviedb.org/3/search/movie?api_key=2254751051c6a0ba6ea30e3dfd393cc9&language=en-US&query=${results[i].Name}`;
+        const theMovieDbIdURL = `https://api.themoviedb.org/3/search/movie?api_key=2254751051c6a0ba6ea30e3dfd393cc9&language=en-US&query=${encodeURIComponent(results[i].Name)}`;
 
         $.ajax({
             url: theMovieDbIdURL,
             dataType: 'jsonp',
             success: function(data){
             //Only want the first result here as it is the most relevant one
-                let movieID = data.results[0].id;
-                getMovieInfo(movieID);
+            getMovieInfo(data.results);
             },
             error: function(err){
                 console.log(err)
@@ -96,7 +100,7 @@ function getMovieID(recommendations) {
 }
 
 function getSimilarMovies(movie) {
-    const tasteDiveURL = `https://tastedive.com/api/similar?k=325596-MovieGur-SYAEXVER&type=movies&q=${movie}&limit=5`;
+    const tasteDiveURL = `https://tastedive.com/api/similar?k=325596-MovieGur-SYAEXVER&type=movies&limit=5&verbose=1&q=${encodeURIComponent(movie)}`;
 
     $.ajax({
         url: tasteDiveURL,
