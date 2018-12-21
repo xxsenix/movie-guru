@@ -41,11 +41,13 @@ function getYouTubeVideoId(movieTitle, movieID) {
 }
 
 function displayMovieList(movies) {
-    console.log(movies);
+
     getYouTubeVideoId(movies.title, movies.id);
 
     let releaseDate = movies.release_date;
     let year = releaseDate.substring(0, 4);
+
+    console.log(movies);
 
     $('#results-list').append(
         `<li>
@@ -54,7 +56,7 @@ function displayMovieList(movies) {
                     <img class='movie-poster' src='https://image.tmdb.org/t/p/w1280${movies.poster_path}'>
                 </div>
                 <div class="col-6">
-                    <h3 class='summary' id="movie-title">${movies.title} (${year}) <span><i class="fa fa-film" aria-hidden="true"></i></span></h3>
+                    <h3 class='summary' id="movie-title"><a href="https://www.imdb.com/title/${movies.imdb_id}" target="_blank">${movies.title}</a> (${year}) <span><i class="fa fa-film" aria-hidden="true"></i></span></h3>
                     <p class='summary'>${movies.overview}</p>
                     <div class="video-container" id="video-${movies.id}"></div>
                 </div>
@@ -66,8 +68,6 @@ function displayMovieList(movies) {
 }
 
 function getMovieInfo(data) {
-
-    console.log(data)
 
     let movieID = data[0].id;
 
@@ -86,24 +86,33 @@ function getMovieInfo(data) {
 }
 
 function getMovieID(recommendations) {
-    
+
     let results = recommendations.Similar.Results;
-    
-    for(let i = 0; i < results.length; i++) {
+    console.log(results);
+    if(results.length === 0) {
+        $('#js-error-message').html(
+            `<i class="fas fa-exclamation-triangle"></i>
+            <p>Hmmm, it doesn't look like we know that one.</p>`
+            );
+        $('#results').removeClass('hidden');
+    }
+    else {
+        for(let i = 0; i < results.length; i++) {
 
-        const theMovieDbIdURL = `https://api.themoviedb.org/3/search/movie?api_key=2254751051c6a0ba6ea30e3dfd393cc9&language=en-US&query=${encodeURIComponent(results[i].Name)}`;
-
-        $.ajax({
-            url: theMovieDbIdURL,
-            dataType: 'jsonp',
-            success: function(data){
-            //Only want the first result here as it is the most relevant one
-            getMovieInfo(data.results);
-            },
-            error: function(err){
-                console.log(err)
-            }
-            });
+            const theMovieDbIdURL = `https://api.themoviedb.org/3/search/movie?api_key=2254751051c6a0ba6ea30e3dfd393cc9&language=en-US&query=${encodeURIComponent(results[i].Name)}`;
+      
+            $.ajax({
+                url: theMovieDbIdURL,
+                dataType: 'jsonp',
+                success: function(data){
+                //Only want the first result here as it is the most relevant one
+                getMovieInfo(data.results);
+                },
+                error: function(err){
+                    console.log(err)
+                }
+                });
+        }
     }
 }
 
@@ -126,6 +135,7 @@ function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
         $('#results-list').empty();
+        $('#js-error-message').empty();
         const movieName = $('#js-search-movies').val();
         getSimilarMovies(movieName);
     });
