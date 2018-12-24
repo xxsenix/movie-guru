@@ -1,5 +1,7 @@
 'use strict';
 
+const movieArr = [];
+
 function createYouTubeVidString(videos, movieID) {
 
 $(`#video-${movieID}`).html(
@@ -40,25 +42,24 @@ function getYouTubeVideoId(movieTitle, movieID) {
     });
 }
 
-function displayMovieList(movies) {
+function displayMovie(movie) {
 
-    getYouTubeVideoId(movies.title, movies.id);
+    getYouTubeVideoId(movie.title, movie.id);
 
-    let releaseDate = movies.release_date;
+    let releaseDate = movie.release_date;
     let year = releaseDate.substring(0, 4);
 
-    console.log(movies);
 
     $('#results-list').append(
         `<li>
             <div class="row">
                 <div class="col-6">
-                    <img class='movie-poster' src='https://image.tmdb.org/t/p/w1280${movies.poster_path}'>
+                    <img class='movie-poster' src='https://image.tmdb.org/t/p/w1280${movie.poster_path}'>
                 </div>
                 <div class="col-6">
-                    <h3 class='summary' id="movie-title"><a href="https://www.imdb.com/title/${movies.imdb_id}" target="_blank">${movies.title}</a> (${year}) <span><i class="fa fa-film" aria-hidden="true"></i></span></h3>
-                    <p class='summary'>${movies.overview}</p>
-                    <div class="video-container" id="video-${movies.id}"></div>
+                    <h3 class='summary' id="movie-title"><a href="https://www.imdb.com/title/${movie.imdb_id}" target="_blank">${movie.title}</a> (${year}) <span><i class="fa fa-film" aria-hidden="true"></i></span></h3>
+                    <p class='summary'>${movie.overview}</p>
+                    <div class="video-container" id="video-${movie.id}"></div>
                 </div>
             </div>
         </li>`
@@ -77,7 +78,7 @@ function getMovieInfo(data) {
         url: theMovieDbInfoURL,
         dataType: 'jsonp',
         success: function(data){
-          displayMovieList(data);
+          displayMovie(data);
         },
         error: function(err){
           console.log(err);
@@ -88,7 +89,9 @@ function getMovieInfo(data) {
 function getMovieID(recommendations) {
 
     let results = recommendations.Similar.Results;
-    console.log(results);
+    console.log('results', results);
+ 
+
     if(results.length === 0) {
         $('#js-error-message').html(
             `<i class="fas fa-exclamation-triangle"></i>
@@ -104,14 +107,13 @@ function getMovieID(recommendations) {
             $.ajax({
                 url: theMovieDbIdURL,
                 dataType: 'jsonp',
-                success: function(data){
-                //Only want the first result here as it is the most relevant one
+                success: function(data){   
                 getMovieInfo(data.results);
                 },
                 error: function(err){
                     console.log(err)
                 }
-                });
+            });
         }
     }
 }
