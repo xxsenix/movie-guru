@@ -1,20 +1,18 @@
 'use strict';
-
-const movieArr = [];
-
+//Displays the movie trailer to the appropriate place in the DOM
 function createYouTubeVidString(videos, movieID) {
 
 $(`#video-${movieID}`).html(
     `<iframe class="youtube-video" src="https://www.youtube.com/embed/${videos[0].id.videoId}" allow="autoplay" encrypted-media" width="350" height="200" frameborder="0" allowFullScreen></iframe>`
     );
 }
-
+//Formats the parameters for the request to YouTube's API
 function formatQueryParams(params) {
     const queryItems = Object.keys(params)
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
     return queryItems.join('&');
   }
-
+//Searches YouTube's API for a movie trailer
 function getYouTubeVideoId(movieTitle, movieID) {
 
     const searchURL = 'https://www.googleapis.com/youtube/v3/search';
@@ -41,12 +39,13 @@ function getYouTubeVideoId(movieTitle, movieID) {
       $('#js-error-message').text(`Something went wrong: ${err.message}`);
     });
 }
-
+//Displays the results to the DOM
 function displayMovie(movie) {
 
     getYouTubeVideoId(movie.title, movie.id);
 
     let releaseDate = movie.release_date;
+    //Only want the year
     let year = releaseDate.substring(0, 4);
 
 
@@ -67,9 +66,9 @@ function displayMovie(movie) {
 
     $('#results').removeClass('hidden');
 }
-
+//Using the movie ID, we obtain information about the movie from the same API (TheMovieDB)
 function getMovieInfo(data) {
-
+    //Only want the first one here as it's the most relevant
     let movieID = data[0].id;
 
     const theMovieDbInfoURL = `https://api.themoviedb.org/3/movie/${movieID}?api_key=2254751051c6a0ba6ea30e3dfd393cc9&language=en-US`
@@ -85,7 +84,7 @@ function getMovieInfo(data) {
         }
      });
 }
-
+//For each recommendation, search TheMovieDB's API for an ID
 function getMovieID(recommendations) {
 
     let results = recommendations.Similar.Results;
@@ -117,7 +116,7 @@ function getMovieID(recommendations) {
         }
     }
 }
-
+//Using TasteDive's API, gets a list of movie recommendations 
 function getSimilarMovies(movie) {
     const tasteDiveURL = `https://tastedive.com/api/similar?k=325596-MovieGur-SYAEXVER&type=movies&limit=5&verbose=1&q=${encodeURIComponent(movie)}`;
 
@@ -132,7 +131,7 @@ function getSimilarMovies(movie) {
         }
      });
     }
-
+//Listens for user input, passes that movie name to getSimilarMovies
 function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
